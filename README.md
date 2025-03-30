@@ -22,13 +22,13 @@ cd ../libvoxelize
 pip install -e .
 ```
 ### Inference
-2.  Prepare your defective mandible mask in the format of NIFIT file. IF you need the reconstructed mandible mask aligned with your defective mandible mask, the defective mandible mask must be resample to the resolution $256 \times 256 \times 256$ (Optional).
+2.  Place your defective mandible mask in the format of NIFIT file to the path `./exp/inp`. IF you need the reconstructed mandible mask aligned with your defective mandible mask, the defective mandible mask must be resample to the resolution $256 \times 256 \times 256$ (Optional).
 
 3.  Preprocess the defective mandible mask file.
 ```angular2html
 python process.py --pre \
-                  --inp /directory/of/your/defective/mandible/mask/files \
-                  --out /path/to/store/preprocessed/data
+                  --inp ./exp/inp \
+                  --out ./exp/inp
 ```
 4.  Reconstruct the complete mandible with our checkpoint.
 ```angular2html
@@ -36,12 +36,12 @@ python run.py -b config.yaml \
               -l ./exp \
               -n Completion \
               --test ./last.ckpt \
-              data.params.infer_dir=/path/to/store/preprocessed/data
+              data.params.infer_path=./exp/inp
 ```
 Tips: If your want to specify your customized output directory, you can set the parameter of "model.params.out_dir" with your own path.
 5.  Postprocess the output to obtain the complete mandible mesh and mask.
 ```angular2html
-python process.py --inp /directory/of/your/defective/mandible/mask/files \
-                  --out /path/to/store/postprocessed/mesh/and/mask \
+python process.py --inp ./exp/inp \
+                  --out ./exp/out \
                   --occ ./exp/Completion/test/step-000000
 ```
